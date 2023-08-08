@@ -1,9 +1,9 @@
 const { deployContract } = require("ethereum-waffle")
 const { network, ethers } = require("hardhat")
-const { developmentChains } = require("../helper-hardhat-config")
-const { verify } = require("../helper-hardhat-config")
+const { networkConfig, developmentChains } = require("../helper-hardhat-config")
+const { verify } = require("../utils/verify")
 
-const VRF_SUB_FUND_AMOUNT = ethers.parseEther("2")
+const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("2")
 module.exports = async function ({ getNamedAccounts, deployments }) {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
@@ -24,7 +24,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         await vrfCoordinatorV2Mock.fundSubcription(subscriptionId, VRF_SUB_FUND_AMOUNT)
     } else {
         // if it were not on a local network
-        vrfCoordinatorV2Address = netwrokConfig[chainId]["vrfCoordinatorV2"]
+        vrfCoordinatorV2Address = networkConfig[chainId]["vrfCoordinatorV2"]
         // we have got a setup to work with our vrfCoordinatorV2 address
         subscriptionId = networkConfig[chainId]["subcriptionId"]
     }
@@ -35,7 +35,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     const interval = networkConfig[chainId]["interval"]
 
     const args = [
-        vrfCoordinatorV2,
+        vrfCoordinatorV2Address,
         entranceFee,
         gasLane,
         subscriptionId,

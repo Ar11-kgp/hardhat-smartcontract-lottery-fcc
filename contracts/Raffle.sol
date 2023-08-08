@@ -211,7 +211,9 @@ abstract contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     function getNumWords() public view returns (uint256) {
         // return NUM_WORDS;
         return 1;
-    }
+    } // since NumWords is actually in the bytecode(const var) technically isn't reading from storage, hence can be a pure function
+
+    // returning NumWords doesn't actually read from storage, it will literally go and read the number 1
 
     function getNumberOfPlayers() public view returns (uint256) {
         return s_players.length;
@@ -225,5 +227,8 @@ abstract contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         // pure bcoz this is a constant func
         return REQUEST_CONFIRMATIONS;
     }
-} // since NumWords is actually in the bytecode(const var) technically isn't reading from storage, hence can be a pure function
-// returning NumWords doesn't actually read from storage, it will literally go and read the number 1
+
+    function getInterval() public view returns (uint256) {
+        return i_interval;
+    }
+}

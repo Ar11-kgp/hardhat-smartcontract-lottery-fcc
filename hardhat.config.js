@@ -14,20 +14,27 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY || "Oxkey"
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "key"
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || "key"
 
-/** @type import('hardhat/config').HardhatUserConfig */
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
 module.exports = {
     defaultNetwork: "hardhat",
     networks: {
         hardhat: {
             chainId: 31337,
-            blcokConfirmations: 1,
+            blockConfirmations: 1,
+        },
+
+        localhost: {
+            chainId: 31337,
         },
 
         sepolia: {
             chainId: 11155111,
             blockConfirmations: 6,
             url: SEPOLIA_URL,
-            accounts: [PRIVATE_KEY],
+            accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+            saveDeployments: true,
         },
     },
     solidity: "0.8.8",
@@ -38,5 +45,8 @@ module.exports = {
         player: {
             default: 1,
         },
+    },
+    mocha: {
+        timeout: 200000, // 200 sec max
     },
 }
